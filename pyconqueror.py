@@ -121,9 +121,9 @@ def get_level(level_number):
             f.write(readme)
 
         print("""
-    Check the README file in the porfile folder.
+    Check the README file in the "{0}" folder.
     Update the player.py file and run it again.
-        """)
+        """.format(level.profile))
         return None
     return level
 
