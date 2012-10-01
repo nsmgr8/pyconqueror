@@ -1,0 +1,33 @@
+Level {{ level.number }}
+
+{{ level.description }}
+
+Tip: {{ level.tip }}
+
+{{ level.floor}}
+
+  > = Stairs
+{% for unit in level.units %}
+  {{ unit.character }} = {{ unit.name }} ({{ unit.max_health }} HP)
+{% endfor %}
+
+
+Warrior Abilities:
+
+{% for name, ability in level.warrior.abilities() %}
+  warrior.{{ name }}
+    {{ ability }}
+{% endfor %}
+
+{% if level.warrior.has_golem %}
+Golem Abilities:
+{% for name, ability in level.warrior.base_golem.abilities %}
+
+  golem.{{ name }}
+    {{ ability.description }}
+{% endfor %}
+{% endif %}
+
+
+When you're done editing player.py, run the pyconqueror command again.
+
