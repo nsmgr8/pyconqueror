@@ -82,7 +82,7 @@ def run(level):
     if not level:
         return
     floor = Floor(level.size)
-    player = import_module('.player', 'profile').Player()
+    player = import_module('.player', level.profile.replace('/', '.')).Player()
     print('Starting the game...')
     floor.draw(level.warrior.position, level.stairs)
     for turn in count(1):
@@ -95,32 +95,38 @@ def run(level):
         time.sleep(1)
 
 
-def main(level_number):
+def get_level(level_number):
     """
     """
-    level = import_module('.level_{0:03}'.format(level_number), 'levels')
+    level_file = 'level_{0:03}'.format(level_number)
+    level = import_module('.{0}'.format(level_file), 'levels')
     level.number = level_number
+    level.profile = 'profile/{0}'.format(level_file)
+    level.player = '{0}/player.py'.format(level.profile)
+    level.readme = '{0}/README'.format(level.profile)
 
-    if not os.path.exists('profile/player.py'):
+    if not os.path.exists(level.player):
         try:
-            os.makedirs('profile')
+            os.makedirs(level.profile)
         except:
             pass
         open('profile/__init__.py', 'w').close()
+        open('profile/{0}/__init__.py'.format(level_file), 'w').close()
         with open('templates/README.jinja') as f:
             template = Template(f.read())
             readme = template.render(level=level)
 
-        shutil.copy('templates/player.py', 'profile/player.py')
-        with open('profile/README', 'w') as f:
+        shutil.copy('templates/player.py', level.player)
+        with open(level.readme, 'w') as f:
             f.write(readme)
 
         print("""
-Check the README file in the porfile folder. Update the player.py file and run
-it again.
+    Check the README file in the porfile folder.
+    Update the player.py file and run it again.
         """)
         return None
     return level
 
+
 if __name__ == '__main__':
-    run(main(1))
+    run(get_level(1))
