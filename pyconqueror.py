@@ -85,7 +85,7 @@ def run(level):
     player = import_module('.player', 'profile').Player()
     print('Starting the game...')
     floor.draw(level.warrior.position, level.stairs)
-    for turn in count():
+    for turn in count(1):
         print('Turn {0}'.format(turn))
         player.play_turn(level.warrior)
         floor.draw(level.warrior.position, level.stairs)
